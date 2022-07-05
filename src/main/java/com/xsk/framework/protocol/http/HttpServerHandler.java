@@ -1,6 +1,6 @@
 package com.xsk.framework.protocol.http;
 
-import com.xsk.framework.protocol.Invocation;
+import com.xsk.framework.Invocation;
 import com.xsk.framework.register.LocalRegister;
 import org.apache.commons.io.IOUtils;
 
@@ -29,7 +29,6 @@ import java.lang.reflect.Method;
 public class HttpServerHandler {
 
     public void handler(HttpServletRequest req, HttpServletResponse resp) {
-
         try {
             //接收到的数据封装成Invocation对象
             Invocation invocation = (Invocation) new ObjectInputStream(req.getInputStream()).readObject();

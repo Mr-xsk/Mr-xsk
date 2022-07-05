@@ -1,4 +1,4 @@
-package com.xsk.framework.protocol;
+package com.xsk.framework;
 
 import java.io.Serializable;
 
