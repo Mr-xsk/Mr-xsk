@@ -1,5 +1,7 @@
 package com.xsk.framework;
 
+import java.io.Serializable;
+
 /**
  * ｜,;,,;
  * ｜                 ,;;'(    社
@@ -15,18 +17,28 @@ package com.xsk.framework;
  * @description:
  * @Time 2022-07-05 15:18
  */
-public class URL {
+public class URL implements Serializable {
 
-     private String hostname;
+    private String protocol; // 协议
+    private String hostname;
+    private Integer port;
+    private String interfaceName; //接口名字
+    private Class implClass; //实现类
 
-     private Integer port;
-
-    public URL() {
-    }
-
-    public URL(String hostname, Integer port) {
+    public URL(String protocol, String hostname, Integer port, String interfaceName, Class implClass) {
+        this.protocol = protocol;
         this.hostname = hostname;
         this.port = port;
+        this.interfaceName = interfaceName;
+        this.implClass = implClass;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     public String getHostname() {
@@ -43,5 +55,21 @@ public class URL {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getInterfaceName() {
+        return interfaceName;
+    }
+
+    public void setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
+    }
+
+    public Class getImplClass() {
+        return implClass;
+    }
+
+    public void setImplClass(Class implClass) {
+        this.implClass = implClass;
     }
 }

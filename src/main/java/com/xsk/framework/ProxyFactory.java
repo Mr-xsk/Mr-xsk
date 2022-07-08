@@ -36,20 +36,40 @@ public class ProxyFactory<T> {
              * proxy 代理的对象
              */
             @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            public Object invoke(Object proxy, Method method, Object[] args) {
 
-                Invocation invocation = new Invocation(interfaceClass.getName(), method.getName(),
-                        method.getParameterTypes(), args);
+                String mock = System.getProperty("mock");
+                if (null != mock && mock.startsWith("return:"))
+                    return mock.replace("return:", "");
 
-                HttpClient httpClient = new HttpClient();
+                try {
+                    Invocation invocation = new Invocation(interfaceClass.getName(), method.getName(),
+                            method.getParameterTypes(), args);
 
-                //从注册中心获取url的集合（使用本地缓存模仿功能）
-                List<URL> urls = RemoteMapRegister.get(interfaceClass.getName());
+                    Invoker invoker = ClusterInvoker.join(interfaceClass);
 
-                //负载均衡从URL集合中随机获取
-                URL url = LoadBalance.random(urls);
+                    return invoker.invoke(invocation);
 
-                return httpClient.send(url.getHostname(), url.getPort(), invocation);
+                    //从注册中心获取url的集合（使用本地缓存模仿功能）
+//                    List<URL> urls = RemoteMapRegister.get(interfaceClass.getName());
+
+                    //负载均衡从URL集合中随机获取
+//                    URL url = LoadBalance.random(urls);
+
+//                    Protocol protocol = ProtocolFactory.getProtocol(url.getProtocol());
+//                    Invoker invoker = protocol.refer(url);
+//                    String result = invoker.invoke(invocation);
+//                    return result;
+
+//                    String property = System.getProperty("protocolName");
+//                    Protocol protocol = ProtocolFactory.getProtocol(property);
+//                    return protocol.send(url, invocation);
+
+//                    HttpClient httpClient = new HttpClient();
+//                    return httpClient.send(url.getHostname(), url.getPort(), invocation);
+                } catch (Exception e){
+                    return "出错了";
+                }
             }
         });
 

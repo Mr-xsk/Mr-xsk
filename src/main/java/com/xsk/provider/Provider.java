@@ -1,5 +1,7 @@
 package com.xsk.provider;
 
+import com.xsk.framework.Protocol;
+import com.xsk.framework.ProtocolFactory;
 import com.xsk.framework.URL;
 import com.xsk.framework.protocol.http.HttpServer;
 import com.xsk.framework.register.LocalRegister;
@@ -26,13 +28,9 @@ public class Provider {
 
     public static void main(String[] args) {
 
-        //本地注册
-        LocalRegister.regist(HelloService.class.getName(), HelloServiceImpl.class);
-
-        //注册中心注册
-        URL url = new URL("localhost", 8080);
-        RemoteMapRegister.regist(HelloService.class.getName(), url);
-
-        new HttpServer().start(url.getHostname(),url.getPort());
+        String protocolName = System.getProperty("protocolName");
+        URL url = new URL(protocolName,"localhost", 8082, HelloService.class.getName(), HelloServiceImpl.class);
+        Protocol protocol = ProtocolFactory.getProtocol(protocolName);
+        protocol.export(url);
     }
 }

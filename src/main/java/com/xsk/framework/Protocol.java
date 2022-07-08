@@ -1,8 +1,5 @@
 package com.xsk.framework;
 
-import java.util.List;
-import java.util.Random;
-
 /**
  * ｜,;,,;
  * ｜                 ,;;'(    社
@@ -16,12 +13,11 @@ import java.util.Random;
  *
  * @Author Mr.Xu
  * @description:
- * @Time 2022-07-05 17:46
+ * @Time 2022-07-07 15:08
  */
-public class LoadBalance {
+public interface Protocol {
 
-    public static Invoker random(List<Invoker> invokers){
-        //随机选出一个Invoker对象
-        return invokers.get(new Random().nextInt(invokers.size()));
-    }
+    public void export(URL url);
+
+    public Invoker refer(URL url);
 }
